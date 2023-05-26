@@ -110,7 +110,6 @@ class _AddTodoState extends State<AddTodo> {
     final body = {
       "title": title,
       "description": description,
-      "is_completed": false,
     };
     // Submit data to the Server
     final url = 'https://api.nstack.in/v1/todos/$id';
