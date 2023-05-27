@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todoapp/Screens/AddTodo.dart';
 
+
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
 
@@ -13,6 +14,7 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   bool isLoading = true;
   List<Map<String, dynamic>> items = [];
+  Map<String, bool> checkedItems = {};
 
   @override
   void initState() {
@@ -48,20 +50,16 @@ class _TodoListState extends State<TodoList> {
                 final item = items[index];
                 final id = item['_id'] as String;
                 final title = item['title'];
-                bool isChecked = item[
-                    'is_completed']; // Get the checkbox state from the item
+                bool isChecked = checkedItems[id] ?? false;
 
                 return Card(
                   child: ListTile(
                     leading: Checkbox(
-                      value:
-                          isChecked, // Provide a default value in case isChecked is null
+                      value: isChecked,
                       onChanged: (newValue) {
                         setState(() {
-                          isChecked =
-                              newValue!; // Update the checkbox state locally
-                          updateTodoItem(id, isChecked,
-                              title); // Update the item in the database
+                          checkedItems[id] = newValue ?? false;
+                          updateTodoItem(id, newValue ?? false, title);
                         });
                       },
                     ),
@@ -70,10 +68,8 @@ class _TodoListState extends State<TodoList> {
                     trailing: PopupMenuButton(
                       onSelected: (value) {
                         if (value == 'edit') {
-                          //Open Edit form
                           navigateToEditPage(item);
                         } else if (value == 'delete') {
-                          //Delete and refresh
                           deleteById(id);
                         }
                       },
@@ -100,7 +96,6 @@ class _TodoListState extends State<TodoList> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: navigateToAddPage,
         label: Text('Add New'),
-        backgroundColor: Color.fromARGB(255, 41, 78, 247),
         foregroundColor: Colors.white,
       ),
     );
@@ -129,7 +124,6 @@ class _TodoListState extends State<TodoList> {
   }
 
   Future<void> deleteById(String id) async {
-    // Delete the item
     final url = 'https://api.nstack.in/v1/todos/$id';
     final uri = Uri.parse(url);
     final response = await http.delete(uri);
@@ -152,11 +146,14 @@ class _TodoListState extends State<TodoList> {
       final result = json['items'] as List;
       setState(() {
         items = result.map<Map<String, dynamic>>((item) {
+          final id = item['_id'] as String;
+          final isChecked = item['is_completed'] as bool;
+          checkedItems[id] = isChecked;
           return item;
         }).toList();
       });
     } else {
-      // show error
+      showErrorMessage('Failed to fetch todos');
     }
     setState(() {
       isLoading = false;
@@ -164,14 +161,12 @@ class _TodoListState extends State<TodoList> {
   }
 
   Future<void> updateTodoItem(String id, bool isChecked, String title) async {
-    print(id);
-    print(isChecked);
     final url = 'https://api.nstack.in/v1/todos/$id';
     final uri = Uri.parse(url);
 
     final updatedItem = {
       'title': title,
-      'is_completed': true,
+      'is_completed': isChecked,
     };
 
     final response = await http.put(
@@ -179,13 +174,6 @@ class _TodoListState extends State<TodoList> {
       body: jsonEncode(updatedItem),
       headers: {'Content-type': 'application/json'},
     );
-    fetchTodo();
-
-    if (response.statusCode == 200) {
-      showSuccessMessage('You finished the Task. Congratulations');
-    } else {
-      showErrorMessage('Failed to Done');
-    }
   }
 
   void showErrorMessage(String message) {
