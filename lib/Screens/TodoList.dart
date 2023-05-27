@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:todoapp/Screens/AddTodo.dart';
 import 'package:http/http.dart' as http;
+import 'package:todoapp/Screens/AddTodo.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -179,13 +179,13 @@ class _TodoListState extends State<TodoList> {
       body: jsonEncode(updatedItem),
       headers: {'Content-type': 'application/json'},
     );
+    fetchTodo();
 
     if (response.statusCode == 200) {
       showSuccessMessage('You finished the Task. Congratulations');
     } else {
       showErrorMessage('Failed to Done');
     }
-    fetchTodo();
   }
 
   void showErrorMessage(String message) {

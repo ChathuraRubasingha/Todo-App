@@ -11,12 +11,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final isLight = false;
     return MaterialApp(
-      title: 'Todo App',
+      title: 'Todo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: isLight?ThemeData.light(): ThemeData.dark(),
       home: TodoList(),
     );
   }
 }
-
