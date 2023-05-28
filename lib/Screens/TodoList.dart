@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todoapp/Screens/AddTodo.dart';
 
-
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
 
@@ -25,16 +24,7 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Todo List",
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: false,
-      ),
+      backgroundColor: Colors.black,
       body: Visibility(
         visible: isLoading,
         child: Center(child: CircularProgressIndicator()),
@@ -52,39 +42,55 @@ class _TodoListState extends State<TodoList> {
                 final title = item['title'];
                 bool isChecked = checkedItems[id] ?? false;
 
-                return Card(
-                  child: ListTile(
-                    leading: Checkbox(
-                      value: isChecked,
-                      onChanged: (newValue) {
-                        setState(() {
-                          checkedItems[id] = newValue ?? false;
-                          updateTodoItem(id, newValue ?? false, title);
-                        });
-                      },
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                       color: Colors.white.withOpacity(0.2), // Set the color of the top border to white
+                        width: 1, // Set the width of the top border
+                      ),
                     ),
-                    title: Text(item['title']),
-                    subtitle: Text(item['description']),
-                    trailing: PopupMenuButton(
-                      onSelected: (value) {
-                        if (value == 'edit') {
-                          navigateToEditPage(item);
-                        } else if (value == 'delete') {
-                          deleteById(id);
-                        }
-                      },
-                      itemBuilder: (context) {
-                        return [
-                          PopupMenuItem(
-                            child: Text('Edit'),
-                            value: 'edit',
-                          ),
-                          PopupMenuItem(
-                            child: Text('Delete'),
-                            value: 'delete',
-                          ),
-                        ];
-                      },
+                  ),
+                  child: Card(
+                    color: Colors.black,
+                    child: ListTile(
+                      leading: Checkbox(
+                        value: isChecked,
+                        onChanged: (newValue) {
+                          setState(() {
+                            checkedItems[id] = newValue ?? false;
+                            updateTodoItem(id, newValue ?? false, title);
+                          });
+                        },
+                      ),
+                      title: Text(
+                        item['title'],
+                        style: TextStyle(
+                          color: Colors.white, // Set the text color to white
+                        ),
+                      ),
+                      subtitle: Text(item['description']),
+                      trailing: PopupMenuButton(
+                        onSelected: (value) {
+                          if (value == 'edit') {
+                            navigateToEditPage(item);
+                          } else if (value == 'delete') {
+                            deleteById(id);
+                          }
+                        },
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                              child: Text('Edit'),
+                              value: 'edit',
+                            ),
+                            PopupMenuItem(
+                              child: Text('Delete'),
+                              value: 'delete',
+                            ),
+                          ];
+                        },
+                      ),
                     ),
                   ),
                 );
@@ -95,9 +101,11 @@ class _TodoListState extends State<TodoList> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: navigateToAddPage,
-        label: Text('Add New'),
+        icon: Icon(Icons.add),
+        label: Text('Add'),
         foregroundColor: Colors.white,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
