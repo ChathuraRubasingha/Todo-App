@@ -41,6 +41,12 @@ class _SidebarState extends State<Sidebar> {
                   // Handle profile navigation
                 },
               ),
+              ListTile(
+                title: Text('Logout'),
+                onTap: () {
+                  // Handle profile navigation
+                },
+              ),
               // Add more list tiles for additional sidebar options
             ],
           ),

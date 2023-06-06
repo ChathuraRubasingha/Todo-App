@@ -1,7 +1,7 @@
-import 'Screens/SideBar.dart';
 import 'package:flutter/material.dart';
+import 'package:todoapp/Screens/Login.dart';
 import 'package:todoapp/Screens/TodoList.dart';
-
+import 'package:todoapp/screens/Registration.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,30 +12,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Todo List'),
-          backgroundColor: Colors.black,
-           actions: [
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                // Handle search action
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                // Handle notification action
-              },
-            ),
-          ],
-        ),
-        drawer: Sidebar(), // Add the Sidebar widget as the drawer
-        body: Container(
-          child: const TodoList()// Main content of your app
-        ),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LoginScreen(),
+        '/register': (context) => RegistrationScreen(),
+        '/todoList': (context) => TodoList(), // Main content of your app
+      },
     );
   }
 }
