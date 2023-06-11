@@ -45,7 +45,8 @@ class _LoginFormState extends State<LoginForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+             
+              SizedBox(height: 50.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -68,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.pushNamed(context, '/todoList');
                             },
                             child: Text('OK'),
                           ),
@@ -79,10 +80,19 @@ class _LoginFormState extends State<LoginForm> {
                 },
                 child: Text('Login'),
               ),
+               TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+                
+                child: Text('Sign Up'),
+              ),
             ],
+            
           ),
         ),
       ),
+      
     );
   }
 }

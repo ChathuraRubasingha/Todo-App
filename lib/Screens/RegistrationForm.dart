@@ -84,7 +84,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.pushNamed(context, '/');
                             },
                             child: Text('OK'),
                           ),

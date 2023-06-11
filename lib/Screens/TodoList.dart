@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todoapp/Screens/AddTodo.dart';
+import 'package:todoapp/Screens/SideBar.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -15,6 +16,8 @@ class _TodoListState extends State<TodoList> {
   List<Map<String, dynamic>> items = [];
   Map<String, bool> checkedItems = {};
 
+  get drawer => null;
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +28,25 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: Text('Todo List'),
+        backgroundColor: Colors.black,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              // Handle search action
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              // Handle notification action
+            },
+          ),
+        ],
+      ),
+      drawer: Sidebar(),
       body: Visibility(
         visible: isLoading,
         child: Center(child: CircularProgressIndicator()),
@@ -46,7 +68,8 @@ class _TodoListState extends State<TodoList> {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                       color: Colors.white.withOpacity(0.2), // Set the color of the top border to white
+                        color: Colors.white.withOpacity(
+                            0.2), // Set the color of the top border to white
                         width: 1, // Set the width of the top border
                       ),
                     ),

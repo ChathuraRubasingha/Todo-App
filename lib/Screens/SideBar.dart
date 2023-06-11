@@ -30,7 +30,13 @@ class _SidebarState extends State<Sidebar> {
             shrinkWrap: true, // Added this line to allow the ListView to take only the required space
             children: <Widget>[
               ListTile(
-                title: Text('Home'),
+                title: Text('Todo'),
+                onTap: () {
+                  // Handle home navigation
+                },
+              ),
+              ListTile(
+                title: Text('done'),
                 onTap: () {
                   // Handle home navigation
                 },
